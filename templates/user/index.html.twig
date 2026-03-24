@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users!
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1>Users</h1>
+		{% include 'layouts/_flash_message.html.twig' %}
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Email</th>
+					<th>firstName</th>
+					<th>lastName</th>
+					<th>Roles</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in users %}
+					<tr>
+						<td>{{ user.id }}</td>
+						<td>{{ user.email }}</td>
+						<td>{{ user.firstName }}</td>
+						<td>{{ user.lastName }}</td>
+						<td>
+                        {% if ('ROLE_ADMIN' in user.roles ) %}
+                           <span class="badge bg-danger">Admin</span>
+                        {% elseif ('ROLE_EDITOR' in user.roles) %}
+                            <span class="badge bg-warning">Editor</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Client</span>
+                        {% endif %}
+                        
+                        {# {{ user.roles|join(', ') }} #}
+                        </td>
+						<td>
+							{% if ('ROLE_ADMIN' in user.roles )==false %}
+								{% if ('ROLE_EDITOR' in user.roles)==false %}
+									<a onclick="return confirm('Are you sure you want to add this user as an editor?');" href="{{ path('app_user_to_editor', {'id': user.id}) }}" class="btn btn-sm btn-outline-primary">Add as editor</a>
+
+								{% else %}
+									<a onclick="return confirm('Are you sure you want to remove this user from the editor role?');" href="{{ path('app_user_remove_editor_role', {'id': user.id}) }}" class="btn btn-sm btn-outline-warning">Remove Editor Role</a>
+
+								{% endif %}
+
+								<a onclick="return confirm('Are you sure you want to delete this user?');" href="{{ path('app_user_remove', {'id': user.id}) }}" class="btn btn-sm btn-outline-danger">Delete</a>
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}
+

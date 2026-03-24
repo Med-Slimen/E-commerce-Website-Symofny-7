@@ -1,0 +1,17 @@
+{%- extends 'base.html.twig' -%}
+
+{%- block title -%}Update Category{%- endblock -%}
+
+{%- block body -%}
+    <div class="container">
+    <div class="form">
+    <br>
+        <h1>Update Category</h1><br>
+        {{form_start(form)}}
+            {{form_row(form.name,{'attr':{'class':'form-control'}})}}
+            <br>
+            <input type="submit" class="btn btn-primary" value="Update">
+        {{form_end(form)}}
+    </div>
+    </div>
+{%- endblock -%}
