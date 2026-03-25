@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="container"><br>
-    <h1>Products</h1>
+    <h1>{{ subCategory.name }}</h1>
     <div class="row">
         {% for product in products %}
             <div class="col-md-4">
@@ -16,7 +16,7 @@
                         </a>
                         <p class="card-text">{{ product.description | slice(0, 100) }}...</p>
                         <h3>{{ product.price }} $</h3>
-                        <a href="{{ path('app_cart_new', {'id': product.id}) }}" class="btn btn-success">Add to Cart</a>
+                        <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-success">Add to Cart</a>
                     </div>
                 </div>
             </div>
@@ -24,6 +24,6 @@
             <p>No products found.</p>
         {% endfor %}
     </div>
-    {{ knp_pagination_render(products,'layouts/pagination_template.html.twig') }}
+    
 </div>
 {% endblock %}

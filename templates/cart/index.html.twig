@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CartController!{% endblock %}
+
+{% block body %}
+<div class="container"><br>
+    <h1>Cart</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>${{ item.product.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>${{ item.product.price * item.quantity }}</td>
+                    <td>
+                        <a href="{{ path('app_cart_product_remove', {'id': item.product.id}) }}" class="btn btn-danger btn-sm">Remove</a>
+                    </td>
+                </tr>
+                
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Your cart is empty.</td>
+                </tr>
+            {% endfor %}
+            {% if total > 0 %}
+            
+            <tr>
+                    <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                    <td colspan="2"><strong>${{ total }} $</strong></td>
+                </tr>
+                {% endif %}
+        </tbody>
+    </table>
+    <a data-turbo="false" href="{{ path('app_order') }}" class="btn btn-success">Proceed to Checkout</a>
+    <a href="{{ path('app_cart_remove') }}" class="btn btn-danger">Delete All</a>
+</div>
+{% endblock %}

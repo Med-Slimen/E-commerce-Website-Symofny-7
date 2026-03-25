@@ -1,0 +1,33 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Product Stock History{% endblock %}
+
+{% block body %}
+<div class="container"><br>
+    <h1>Stock History For {{ productsAdded[0].product.name }}</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Quantity Added</th>
+                <th>Date Added</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for productAdded in productsAdded %}
+            <tr>
+                <td>{{ productAdded.id }}</td>
+                <td>{{ productAdded.qte }}</td>
+                <td>{{ productAdded.createdAt|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-primary" href="{{ path('app_product_show', {'id': productsAdded[0].product.id}) }}">Back To Product</a>
+</div>
+{% endblock %}

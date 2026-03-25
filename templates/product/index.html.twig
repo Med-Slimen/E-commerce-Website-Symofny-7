@@ -13,6 +13,7 @@
                 <th>Name</th>
                 <th>Description</th>
                 <th>Price</th>
+                <th>Stock</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -21,11 +22,18 @@
             <tr>
                 <td>{{ product.id }}</td>
                 <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
+                <td>{{ product.description|slice(0, 100) }}...</td>
                 <td>{{ product.price }}</td>
+                <td>{% if product.stock > 0 %}
+                    {{ product.stock }}
+                    {% else %}
+                    <span class="badge bg-danger">Out of stock</span>
+                {% endif %}
+                </td>
                 <td>
-                    <a href="{{ path('app_product_show', {'id': product.id}) }}">show</a>
-                    <a href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
+                    <a class="btn btn-outline-primary" href="{{ path('app_product_show', {'id': product.id}) }}">show</a>
+                    <a class="btn btn-outline-warning" href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
+                    <a class="btn btn-outline-info" href="{{ path('app_product_stock_add', {'id': product.id}) }}">Add Stock</a>
                 </td>
             </tr>
         {% else %}
@@ -36,6 +44,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_product_new') }}">Create new</a>
+    <a class="btn btn-outline-primary" href="{{ path('app_product_new') }}">Create new</a>
 </div>
 {% endblock %}
