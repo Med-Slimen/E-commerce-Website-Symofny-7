@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order Confirmation{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Thank you for your order!</h4>
+            <p>Your order has been successfully placed. We will process it shortly and keep you updated on the status.</p>
+            <hr>
+            <p class="mb-0">If you have any questions, feel free to contact our support team.</p>
+        </div>
+        <a href="{{ path('app_home') }}" class="btn btn-primary">Continue Shopping</a>
+    </div>
+{% endblock %}
