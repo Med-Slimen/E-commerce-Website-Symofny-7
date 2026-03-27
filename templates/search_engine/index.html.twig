@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}search results!{% endblock %}
+
+{% block body %}
+<div class="container"><br>
+    <h1>Search Results for "{{ word }}"</h1>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <img src="{{ asset('uploads/images/' ~ product.image) }}" class="card-img-top object-fit-cover" width="250px" height="400px" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <a  style="text-decoration: none;color:green;" href="{{ path('app_home_product_show', {'id': product.id}) }}">
+                            <h5 class="card-title ">{{ product.name }}</h5>
+                        </a>
+                        <p class="card-text">{{ product.description | slice(0, 100) }}...</p>
+                        <h3>{{ product.price }} $</h3>
+                        <a href="{{ path('app_cart_new', {'id': product.id}) }}" class="btn btn-success">Add to Cart</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>No products found.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

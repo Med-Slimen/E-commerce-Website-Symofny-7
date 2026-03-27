@@ -147,6 +147,7 @@ final class ProductController extends AbstractController
      #[Route('/add/product/{id}/stock/history', name: 'app_product_stock_add_history', methods: ['GET'])]
     public function productAddHistory($id, ProductRepository $productRepository,AddProductHistoryRepository $addProductHistoryRepository): Response
     {
+
         $product=$productRepository->find($id);
         $productAddedHistory=$addProductHistoryRepository->findBy(['product'=>$product],['createdAt'=>'ASC']);
         return $this->render('product/addedStockHistoryShow.html.twig', [

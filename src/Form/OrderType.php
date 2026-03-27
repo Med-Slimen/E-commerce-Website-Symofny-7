@@ -54,6 +54,9 @@ class OrderType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Order::class,
+             'attr' => [
+                'data-turbo' => 'false',
+            ],
         ]);
     }
 }

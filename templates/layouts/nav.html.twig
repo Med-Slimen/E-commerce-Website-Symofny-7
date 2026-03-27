@@ -1,67 +1,107 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
-  <div class="container">
-    <a class="navbar-brand" href="{{ path('app_home') }}">My shop</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        {% if categories is defined %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Category
-          </a>
+	<div class="container">
+		<a class="navbar-brand" href="{{ path('app_home') }}">My shop</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Link</a>
+				</li>
+				{% if categories is defined %}
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Category
+						</a>
+						<ul class="dropdown-menu">
+							{% for category in categories %}
+								<li>
+									<a class="dropdown-item text-success text-bold" href="">{{ category.name }}</a>
+								</li>
+								{% for subCategory in category.subCategories %}
+									<li>
+										<a class="dropdown-item" href="{{ path('app_home_product_filter', {'id': subCategory.id}) }}">{{ subCategory.name }}</a>
+									</li>
+								{% endfor %}
+								<li><hr class="dropdown-divider"></li>
+							{% endfor %}
+						</ul>
+					</li>
+				{% endif %}
+				{% if is_granted("ROLE_ADMIN") %}
+
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Adminstration
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a class="dropdown-item" href="{{ path('app_category') }}">Category</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="{{ path('app_category_new') }}">Add Category</a>
+							</li>
+							<li><hr class="dropdown-divider"></li>
+							<li>
+								<a class="dropdown-item" href="{{ path('app_sub_category_index') }}">Sub Categories</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="{{ path('app_sub_category_new') }}">Add Sub Category</a>
+							</li>
+							<li><hr class="dropdown-divider"></li>
+							<li><hr class="dropdown-divider"></li>
+							<li>
+								<a class="dropdown-item" href="{{ path('app_product_index') }}">Products</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="{{ path('app_product_new') }}">Add Product</a>
+							</li>
+							<li><hr class="dropdown-divider"></li>
+							<li>
+								<a class="dropdown-item" href="{{ path('app_user') }}">Users</a>
+							</li>
+						</ul>
+					</li>
+				{% endif %}
+				{% if app.user==false %}
+					<li class="nav-item">
+						<a href="{{ path('app_register') }}" class="nav-link">Register</a>
+					</li>
+					<li class="nav-item">
+						<a href="{{ path('app_login') }}" class="nav-link">Login</a>
+					</li>
+				{% endif %}
+        {% if is_granted("ROLE_EDITOR") %}
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						Orders
+					</a>
           <ul class="dropdown-menu">
-            {% for category in categories %}
-              <li><a class="dropdown-item text-success text-bold" href="">{{ category.name }}</a></li>
-              {% for subCategory in category.subCategories %}
-                <li><a class="dropdown-item" href="{{ path('app_home_product_filter', {'id': subCategory.id}) }}">{{ subCategory.name }}</a></li>
-              {% endfor %}
-              <li><hr class="dropdown-divider"></li>
-            {% endfor %}
-          </ul>
-        </li>
-         {% endif %}
-        {% if is_granted("ROLE_ADMIN") %}
-        
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Adminstration
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{{ path('app_category') }}">Category</a></li>
-            <li><a class="dropdown-item" href="{{ path('app_category_new') }}">Add Category</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{{ path('app_sub_category_index') }}">Sub Categories</a></li>
-            <li><a class="dropdown-item" href="{{ path('app_sub_category_new') }}">Add Sub Category</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{{ path('app_product_index') }}">Products</a></li>
-            <li><a class="dropdown-item" href="{{ path('app_product_new') }}">Add Product</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{{ path('app_user') }}">Users</a></li>
-          </ul>
-        </li>
+            <li>
+              <a class="dropdown-item" href="{{ path('app_order') }}">My Orders</a>
+            </li>
+            
+              <li>
+                <a class="dropdown-item" href="{{ path('app_order_show', {'type': 'is-completed'}) }}">Delivered Orders</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ path('app_order_show', {'type': 'pay-on-stripe-not-delivered'}) }}">Pay on Stripe - Not Delivered</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ path('app_order_show', {'type': 'pay-on-stripe-is-delivered'}) }}">Pay on Stripe - Delivered</a>
+                </li>
+            
+				</li>
         {% endif %}
-        {% if app.user==false %}
-        <li class="nav-item">
-          <a href="{{ path('app_register') }}" class="nav-link" >Register</a>
-        </li>
-          <li class="nav-item">
-            <a href="{{ path('app_login') }}" class="nav-link" >Login</a>
-          </li>
-        {% endif %}
-      </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
+			</ul>
+			<form data-turbo="false" class="d-flex" action="{{ path('app_search_engine') }}" method="get" role="search">
+				<input name="word" class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+				<button class="btn btn-outline-success" type="submit">Search</button>
+			</form>
+		</div>
+	</div>
 </nav>
