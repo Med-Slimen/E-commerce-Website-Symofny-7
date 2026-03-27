@@ -6,10 +6,12 @@ use App\Entity\City;
 use App\Entity\Order;
 use App\Entity\OrderProducts;
 use App\Form\OrderType;
+use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use App\Service\Cart;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,6 +56,18 @@ final class OrderController extends AbstractController
             'total' => $cartData['total'],
         ]);
     }
+    #[Route('/editor/order', name: 'app_order_show')]
+    public function getAllOrders(OrderRepository $orderRepository,Request $request,PaginatorInterface $paginatorInterface): Response{
+        $data=$orderRepository->findBy([], ['id' => 'DESC']);
+         $orders = $paginatorInterface->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            1
+        );
+        return $this->render('order/order.html.twig',[
+            'orders'=>$orders
+        ]);
+    }
       #[Route('/city/{id}/shipping/cost', name: 'app_city_shipping_cost', methods: ['GET'])]
     public function cityShippingCost(City $city): Response{
         $cityShippingPrice=$city->getShippingCost();
@@ -62,5 +76,21 @@ final class OrderController extends AbstractController
      #[Route('/order-ok-message', name: 'app_order_ok_message')]
     public function orderMessage(): Response{
         return $this->render('order/order_message.html.twig');
+    }
+     #[Route('/editor/order/{id}/is-completed/update', name: 'app_order_update_is_completed')]
+    public function isCompletedUpdate($id,OrderRepository $orderRepository,EntityManagerInterface $entityManager): Response{
+        $order = $orderRepository->find($id);
+        $order->setIsCompleted(true);
+        $entityManager->persist($order);
+        $entityManager->flush();
+        $this->addFlash('success', 'Order marked as delivered successfully!');
+        return $this->redirectToRoute('app_order_show');
+        }
+     #[Route('/editor/order/{id}/remove', name: 'app_order_remove')]
+    public function removeOrder(Order $order,OrderRepository $orderRepository,EntityManagerInterface $entityManager): Response{
+        $entityManager->remove($order);
+        $entityManager->flush();
+        $this->addFlash('success', 'Order deleted successfully!');
+        return $this->redirectToRoute('app_order_show');
     }
 }
