@@ -21,6 +21,9 @@ final class CartController extends AbstractController
     public function index(SessionInterface $session,Cart $cart): Response
     {
         $cartData = $cart->getCart($session);
+        $cartProducts = $cartData['cart'] ?? [];
+        $products=[];
+        
         return $this->render('cart/index.html.twig', [
             'items' => $cartData['cart'],
             'total' => $cartData['total'],

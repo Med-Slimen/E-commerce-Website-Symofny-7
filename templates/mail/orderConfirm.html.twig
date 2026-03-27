@@ -1,0 +1,84 @@
+<style>
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    .table th {
+        background-color: #f2f2f2;
+        text-align: left;
+    }
+    .table img {
+        max-width: 100px;
+        height: auto;
+    }
+</style>
+<div class="container mt-5">
+	<h3>Order n:
+		{{ order.id }}</h3>
+        <hr>
+	<span class="badge bg-success">Date : {{ order.createdAt|date('d/m/Y') }}</span>
+    <br>
+    <h2>Order Details</h2>
+	<h5>Information about the order:</h5>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th scope="col">First Name</th>
+				<th scope="col">Last Name</th>
+				<th scope="col">Phone</th>
+				<th scope="col">Address</th>
+				<th scope="col">City</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr>
+				<td>{{ order.firstName }}</td>
+				<td>{{ order.lastName }}</td>
+				<td>{{ order.phone }}</td>
+				<td>{{ order.adresse }}</td>
+				<td>{{ order.city.name }}</td>
+			</tr>
+
+		</tbody>
+	</table>
+
+	<h5>Products in the order:</h5>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th scope="col">Product Name</th>
+				<th scope="col">Price</th>
+				<th scope="col">Quantity</th>
+				<th scope="col">Total Price</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for product in order.orderProducts %}
+				<tr>
+					<td>{{ product.product.name }}</td>
+					<td>{{ product.product.price }}
+						$</td>
+					<td>{{ product.qte }}</td>
+					<td>{{ product.product.price * product.qte }}
+						$</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<span>Shipping Cost:
+		{{ order.city.shippingCost }}$</span>
+        <hr>
+	<h5>Total Order Price:
+		{{ order.totalPrice + order.city.shippingCost }}$</h5>
+</div>
+

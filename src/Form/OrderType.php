@@ -22,6 +22,10 @@ class OrderType extends AbstractType
                 'label' => 'Last Name',
                 'attr' => ['placeholder' => 'Enter last name','class'=>'form-control']
             ])
+            ->add('email', null, [
+                'label' => 'Email',
+                'attr' => ['placeholder' => 'Enter email','class'=>'form-control']
+            ])
             ->add('phone', null, [
                 'label' => 'Phone',
                 'attr' => ['placeholder' => 'Enter phone','class'=>'form-control']
@@ -42,6 +46,7 @@ class OrderType extends AbstractType
                 'label' => 'Pay on Delivery',
                 'attr' => ['class'=>'form-check-input']
             ])
+            
         ;
     }
 

@@ -9,6 +9,7 @@ use App\Form\OrderType;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use App\Service\Cart;
+use App\Service\StripePayment;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -16,10 +17,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class OrderController extends AbstractController
 {
+    public function __construct(private MailerInterface $mailer)
+    {
+
+    }
     #[Route('/order', name: 'app_order')]
     public function index(Request $request, EntityManagerInterface $entityManager, 
     SessionInterface $session, ProductRepository $productRepository,
@@ -46,10 +53,21 @@ final class OrderController extends AbstractController
                 }
                 }
                 $session->set('cart', []);
+                $html=$this->renderView('mail/orderConfirm.html.twig', [
+                    'order' => $order,
+                ]);
+                $email=(new Email())
+                    ->from('myShop@gmail.com')
+                    ->to($order->getEmail())
+                    ->subject('Order Confirmation')
+                    ->html($html);
+                $this->mailer->send($email);
                 return $this->redirectToRoute('app_order_ok_message');
-            }else{
-                
-                }
+            }
+            $payment = new StripePayment();
+            $payment->startPayment($cartData);
+            $stripeRedirectUrl = $payment->getStripeRedirectUrl();
+             return $this->redirect($stripeRedirectUrl);
         }
         return $this->render('order/index.html.twig', [
             'form' => $form->createView(),
