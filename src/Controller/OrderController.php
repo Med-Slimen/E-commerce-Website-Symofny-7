@@ -128,7 +128,7 @@ final class OrderController extends AbstractController
         $entityManager->persist($order);
         $entityManager->flush();
         $this->addFlash('success', 'Order marked as delivered successfully!');
-        return $this->redirectToRoute($request->headers->get('referer'));
+        return $this->redirectToRoute('app_order_show', ['type' => 'all']);
     }
     #[Route('/editor/order/{id}/remove', name: 'app_order_remove')]
     public function removeOrder(Order $order, OrderRepository $orderRepository, EntityManagerInterface $entityManager): Response
@@ -136,6 +136,6 @@ final class OrderController extends AbstractController
         $entityManager->remove($order);
         $entityManager->flush();
         $this->addFlash('success', 'Order deleted successfully!');
-        return $this->redirectToRoute('app_order_show');
+        return $this->redirectToRoute('app_order_show', ['type' => 'all']);
     }
 }
