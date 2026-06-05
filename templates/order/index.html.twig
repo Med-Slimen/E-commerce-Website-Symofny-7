@@ -28,7 +28,7 @@
     $(document).ready(function() {
         const citySelector=$('#order_city');
         const cityValue=citySelector.val();
-        const url='http://127.0.0.1:8080/city/' + cityValue + '/shipping/cost';
+        const url='https://127.0.0.1:8080/city/' + cityValue + '/shipping/cost';
         function ajaxRequest(url){
             $.ajax({
                 url: url,
@@ -52,7 +52,7 @@
         ajaxRequest(url);
         citySelector.on('change', function() {
                 const cityValue=$(this).val();
-                const urlUpdated='http://127.0.0.1:8080/city/' + cityValue + '/shipping/cost';
+                const urlUpdated='https://127.0.0.1:8080/city/' + cityValue + '/shipping/cost';
                 ajaxRequest(urlUpdated);
             });
     });
